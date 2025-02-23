@@ -1,7 +1,12 @@
 export default function Logger({ gameTurns }) {
-    return (
+  return (
     <ol id="log">
-        <li></li>
+      {gameTurns.map((turn) => (
+        <li key={`${turn.square.rowIndex}-${turn.square.squareIndex}`}>
+          {turn.player.name} selected row {turn.square.rowIndex + 1}, square{" "}
+          {turn.square.squareIndex + 1}
+        </li>
+      ))}
     </ol>
-    );
+  );
 }
