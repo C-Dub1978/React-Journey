@@ -25,7 +25,7 @@ export function Player({ playerInfo, currentPlayer }) {
   }
 
   return (
-    <li className={playerName === currentPlayer.name ? 'active' : '' } >
+    <li className={playerInfo.name === currentPlayer.name ? 'active' : '' } >
       <span className="player">
         <span className="player-name">{nameElement}</span>
         <span className="player-symbol">{playerInfo.symbol}</span>
