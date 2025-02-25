@@ -1,15 +1,17 @@
+import { useState } from "react"
 import AllInputs from "./components/AllInputs"
 import Header from "./components/Header"
-
-export type InputFieldData = {
-
-};
+import TableResults from "./components/Results"
+import { userInputs, ParsedInvestmentResult } from "./util/inputConfig"
 
 function App(): JSX.Element {
+  const [ parsedResults, setParsedResults ] = useState([]);
+
   return (
     <div>
       <Header />
-      <AllInputs allInputFieldsData={[]}/>
+      <AllInputs allInputFieldsData={userInputs} />
+      <TableResults resultsData={[]} />
     </div>
   )
 }
