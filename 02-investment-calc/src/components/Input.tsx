@@ -14,7 +14,7 @@ export default function Input({
     let initialValue;
 
     function handleInputBlur(value: string): void {
-        onInputBlur(+value, inputData.inputName);
+        onInputBlur(parseFloat(value), inputData.inputName);
     }
   return (
     <div>

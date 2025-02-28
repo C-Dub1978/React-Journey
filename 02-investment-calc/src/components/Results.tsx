@@ -1,20 +1,29 @@
 import { ParsedInvestmentResult, UserInputConfig } from "../util/inputConfig";
-import { AnnualDataResult, calculateInvestmentResults } from "../util/investment";
+import {
+  AnnualDataResult,
+  calculateInvestmentResults,
+  formatter,
+} from "../util/investment";
 
 function hasAllValues(results: UserInputConfig[]): boolean {
   return results.some((userInput: UserInputConfig) => {
     return userInput.currentValue !== undefined && userInput.currentValue > 0;
-  })
+  });
 }
 
-function deriveInvestmentObject(userInputs: UserInputConfig[]): ParsedInvestmentResult {
-  return userInputs.reduce((accum: Partial<ParsedInvestmentResult>, curr: UserInputConfig) => {
-    accum = {
-      ...accum,
-      [`${curr.inputName}`]: curr.currentValue
-    }
-    return accum;
-  }, {}) as ParsedInvestmentResult;
+function deriveInvestmentObject(
+  userInputs: UserInputConfig[]
+): ParsedInvestmentResult {
+  return userInputs.reduce(
+    (accum: Partial<ParsedInvestmentResult>, curr: UserInputConfig) => {
+      accum = {
+        ...accum,
+        [`${curr.inputName}`]: curr.currentValue,
+      };
+      return accum;
+    },
+    {}
+  ) as ParsedInvestmentResult;
 }
 
 export default function TableResults({
@@ -22,11 +31,14 @@ export default function TableResults({
 }: {
   inputData: UserInputConfig[];
 }): JSX.Element {
-  const calculatedValues = !!hasAllValues(inputData) ? calculateInvestmentResults(deriveInvestmentObject(inputData)) : [];
-  console.log('Results component :: calculatedValue :: ', calculatedValues);
+  const calculatedValues = !!hasAllValues(inputData)
+    ? calculateInvestmentResults(deriveInvestmentObject(inputData))
+    : [];
+  console.log("Results component :: calculatedValue :: ", calculatedValues);
+  let initialInvestment: number;
   return (
     <>
-      { calculatedValues.length > 0 ? (
+      {calculatedValues.length > 0 ? (
         <table id="result">
           <thead>
             <tr>
@@ -38,16 +50,30 @@ export default function TableResults({
             </tr>
           </thead>
           <tbody>
-            { calculatedValues.map((annualResult: AnnualDataResult, index: number) => {
-              return (
-                <tr key={index}>
-                  <td>{index + 1}.</td>
-                  {Object.values(annualResult).map((result: number, valueIndex: number) => {
-                    return <td key={result}>{result}</td>;
-                  })}
-                </tr>
-              );
-            })}
+            {calculatedValues.map(
+              (annualResult: AnnualDataResult, index: number) => {
+                if (index === 0) {
+                  initialInvestment =
+                    annualResult.valueEndOfYear -
+                    annualResult.interest -
+                    annualResult.annualInvestment;
+                }
+                const totalInterestValue =
+                  annualResult.valueEndOfYear -
+                  annualResult.annualInvestment * annualResult.year;
+                -initialInvestment;
+                const totalAmountInvested = annualResult.valueEndOfYear - totalInterestValue;
+                return (
+                  <tr key={annualResult.year}>
+                    <td>{annualResult.year}</td>
+                    <td>{formatter.format(annualResult.valueEndOfYear)}</td>
+                    <td>{formatter.format(annualResult.interest)}</td>
+                    <td>{formatter.format(totalInterestValue)}</td>
+                    <td>{formatter.format(totalAmountInvested)}</td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       ) : (

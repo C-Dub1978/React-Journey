@@ -11,11 +11,9 @@ export default function AllInputs({
   inputChangeCallback: Function
 }): JSX.Element {
     console.log('On AllInputs.tsx!');
+
     function onInputChange(value: number, inputName: InputFieldNames): any {
-        const index = allInputFieldsData.findIndex((value: UserInputConfig) => value.inputName === inputName);
-        allInputFieldsData[index].currentValue = value;
-        allInputFieldsData = [...allInputFieldsData];
-        inputChangeCallback(allInputFieldsData);
+        inputChangeCallback(value, inputName);
     }
 
   return (
