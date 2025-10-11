@@ -23,7 +23,7 @@ export default function TimerChallenge({ title, targetTime }) {
 
   return (
     <>
-      <ResultModal targetTime={targetTime} result={'lost'} elementRef={resultDialog} fuck="FUCK" you="you" />
+      <ResultModal targetTime={targetTime} result={'lost'} elementRef={resultDialog}/>
       <section className="challenge">
         <h2>{title}</h2>
         {timerExpired && <p>You lost!</p>}

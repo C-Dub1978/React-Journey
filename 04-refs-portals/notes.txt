@@ -1,0 +1,11 @@
+one hook that can work with you and refs is the 'useImperativeHandle' hook.
+
+What you want to do is get into the habit of exposing useable/callable component level API's, 
+which can work with refs. That way the callers can use a ref to an object, or in this case
+a component and you've got an API that will never change (except when you change the component API functions)
+
+But this is a way to ensure that no matter the callers or context outside your component, you
+can only have to update the API in one place.... For instance if you replace a modal component
+with a textbox or something, you would only have to update a single 'openComponent()' function
+inside the component API itself, rather than having to worry outside the component about
+what the actual implementation details are.
